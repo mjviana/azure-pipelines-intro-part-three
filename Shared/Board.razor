@@ -1,0 +1,11 @@
+@if(Location is not null) {
+    <BoardRow Source=@Location.ParkingIncluded SymbolClass="fa-car" SuccessMessage="Parking included" FailureMessage="No parking available" />
+    <BoardRow Source=@Location.ConferenceRoomsIncluded SymbolClass="fa-suitcase" SuccessMessage="Conference rooms available" FailureMessage="No conference rooms" />
+    <BoardRow Source=@Location.ReceptionIncluded SymbolClass="fa-phone" SuccessMessage="Reception services provided" FailureMessage="No reception services" />
+    <BoardRow Source=@Location.PublicAccess SymbolClass="fa-building" SuccessMessage="Public access available" FailureMessage="No public access" />
+}
+
+@code {
+    [Parameter]
+    public Location? Location { get; set; }
+}

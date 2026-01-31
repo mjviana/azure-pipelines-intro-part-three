@@ -1,0 +1,33 @@
+@if(Location is not null) {
+    <div class="card text-white bg-dark">
+        @if(ShowImage) {
+            <img src="/img/@Location.Image" class="card-img-top" alt=@Location.Name />        
+        }
+        <div class="card-body">
+            <h5 class="card-title text-center">
+                @Location.Name
+            </h5>
+            <div class="card-text my-2">
+                <Board Location=@Location />
+            </div>
+            <p class="card-text">
+                <small class="text-muted">
+                    @Location.MailingAddress
+                </small>
+            </p>
+            <a href="/locations/@Location.Id">
+                <a class="btn btn-secondary">
+                    Learn more
+                </a>
+            </a>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Location? Location { get; set; }
+
+    [Parameter]
+    public bool ShowImage { get; set; }
+}

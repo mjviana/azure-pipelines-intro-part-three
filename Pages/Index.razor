@@ -1,0 +1,35 @@
+﻿@page "/"
+@inject HttpClient Http
+@code {
+    private IEnumerable<IEnumerable<Location>>? groups;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await Http.GetFromJsonAsync<IEnumerable<Location>>("data/locations.json") ?? Enumerable.Empty<Location>();
+        groups = data
+            .OrderByDescending(l => l.LastRenovationDate)
+            .Take(4)
+            .ToList<Location>()
+            .Chunk(size: 2);
+    }
+}
+
+<Jumbotron />
+<section class="container">
+    <div class="card bg-dark">
+        <div class="card-body">
+            <h5 class="card-title display-4 text-center">
+                Featured Locations
+            </h5>
+        </div>
+    </div> 
+    @foreach(var group in groups ?? Enumerable.Empty<IEnumerable<Location>>())
+    {
+        <div class="card-group">
+            @foreach(var location in group)
+            {
+                <Card Location=@location ShowImage="@false" />
+            }
+        </div>
+    }
+</section>

@@ -1,0 +1,26 @@
+﻿@page "/locations"
+@inject HttpClient Http
+@code {
+    private IEnumerable<IEnumerable<Location>>? groups;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await Http.GetFromJsonAsync<IEnumerable<Location>>("data/locations.json") ?? Enumerable.Empty<Location>();
+        groups = data
+            .OrderBy(l => l.Name)
+            .ToList<Location>()
+            .Chunk(size: 3);
+    }
+}
+
+<section class="container text-white bg-dark py-3">
+    @foreach(var group in groups ?? Enumerable.Empty<IEnumerable<Location>>())
+    {
+        <div class="card-group">
+            @foreach(var location in group)
+            {
+                <Card Location=@location ShowImage=@true />
+            }
+        </div>
+    }
+</section>

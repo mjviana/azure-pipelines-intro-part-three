@@ -1,0 +1,88 @@
+@page "/locations/{id}"
+@inject HttpClient Http
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    private Location? location;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var data = await Http.GetFromJsonAsync<IEnumerable<Location>>("data/locations.json") ?? Enumerable.Empty<Location>();
+        location = data
+            .SingleOrDefault(l => l.Id == Id);
+    }
+}
+
+@if(location is not null) {
+    <section class="container text-white bg-dark py-3">
+        <div class="row">
+            <img src="/img/@location.Image" class="col-sm-6" alt=@location.Name />
+            <div class="col-sm-6">
+                <h4 class="display-4 text-white">
+                    @location.Name}
+                </h4>
+                <p class="text-muted">
+                    @location.MailingAddress
+                </p>
+                <div class="my-2">
+                    <Board Location=@location />
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-sm table-striped bg-secondary text-dark">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Room
+                    </th>
+                    <th scope="col">
+                        Monthly Rate
+                    </th>
+                    <th scope="col">
+                        Seats
+                    </th>
+                    <th scope="col">
+                        Private Washroom
+                    </th>
+                    <th scope="col">
+                        Phone
+                    </th>
+                    <th scope="col">
+                        Windows
+                    </th>
+                    <th scope="col">
+                        Corner
+                    </th>
+                </tr>
+            </thead>
+            <tbody>            
+                @foreach(var room in location.Rooms) {
+                    <tr>
+                        <th scope="row">
+                            @room.Description
+                        </th>
+                        <td>
+                            @($"{room.MonthlyRate:C}")
+                        </td>
+                        <td>
+                            @room.Seats
+                        </td>
+                        <td>
+                            @if(room.PrivateFacilities) { <Check /> }
+                        </td>
+                        <td>
+                            @if(room.PhoneIncluded) { <Check /> }
+                        </td>
+                        <td>
+                            @if(room.Windows) { <Check /> }
+                        </td>
+                        <td>
+                            @if(room.Corner) { <Check /> }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+}
