@@ -9,6 +9,7 @@ stages:
         steps:
         - task: Docker@2
           inputs:
+            repository: 'dotnetwebapp'
             command: 'build'
             Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
             tags: |
