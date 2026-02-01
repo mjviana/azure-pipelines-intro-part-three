@@ -1,0 +1,16 @@
+pool: 
+  vmImage: ubuntu-latest
+stages:
+  - stage: cd
+    displayName: Continuous deployment
+    jobs:
+      - job: docker_build
+        displayName: Build Docker container image
+        steps:
+        - task: Docker@2
+          inputs:
+            command: 'build'
+            Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+            tags: |
+              $(Build.BuildId)
+              latest
