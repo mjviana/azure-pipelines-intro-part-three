@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . /app
 
-RUN dotnet publish --configuration Release --output out
+RUN dotnet publish Contoso.Spaces.Web.csproj --configuration Release --output out
 
 FROM nginx:alpine
 
