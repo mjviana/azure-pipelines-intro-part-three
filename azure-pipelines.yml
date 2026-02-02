@@ -8,7 +8,9 @@ stages:
         displayName: Build Docker container image
         steps:
         - task: Docker@2
+          displayName: Build Docker container image
           inputs:
+            containerRegistry: 'azure-acr'
             repository: 'dotnetwebapp'
             command: 'build'
             Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
