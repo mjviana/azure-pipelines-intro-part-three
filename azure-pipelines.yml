@@ -5,10 +5,10 @@ stages:
     displayName: Continuous deployment
     jobs:
       - job: docker_build_push
-        displayName: Build Docker container image
+        displayName: Build and push Docker container image to Azure Container Registry
         steps:
         - task: Docker@2
-          displayName: Build and push Docker container image to Azure Container Registry
+          displayName: Build Docker container image
           inputs:
             containerRegistry: 'azure-acr'
             repository: 'dotnetwebapp'
