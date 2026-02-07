@@ -4,16 +4,25 @@ stages:
   - stage: cd
     displayName: Continuous deployment
     jobs:
-      - job: docker_build
+      - job: docker_build_push
         displayName: Build Docker container image
         steps:
         - task: Docker@2
-          displayName: Build Docker container image
+          displayName: Build and push Docker container image to Azure Container Registry
           inputs:
             containerRegistry: 'azure-acr'
             repository: 'dotnetwebapp'
             command: 'build'
             Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+            tags: |
+              $(Build.BuildId)
+              latest
+        - task: Docker@2
+          displayName: Push container image to Azure Container Registry
+          inputs:
+            containerRegistry: 'azure-acr'
+            repository: 'dotnetwebapp'
+            command: 'push'
             tags: |
               $(Build.BuildId)
               latest
